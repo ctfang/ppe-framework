@@ -1,0 +1,38 @@
+{
+  "name": "selden1992/ppe-framework",
+  "description": "phalcon框架",
+  "keywords": ["phalcon", "framework", "psr-4"],
+  "license": "proprietary",
+  "type": "MIT",
+  "authors": [
+    {
+      "name": "明月有色",
+      "email": "2206582181@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "ppe/"
+    },
+    "files":[
+      "ppe/helpers.php"
+    ]
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^2.4",
+    "symfony/debug": "^3.3",
+    "symfony/var-dumper": "^3.3",
+    "symfony/console": "~3.3",
+    "monolog/monolog": "~1.12",
+    "filp/whoops": "^2.1.4"
+  },
+  "require-dev": {
+    "phalcon/ide-stubs": "*"
+  }
+}
