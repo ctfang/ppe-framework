@@ -101,7 +101,7 @@ class ModulesRouteServiceProvider extends ServiceProvider
                 ]
             );
         }
-        $uri = $_SERVER['HTTP_HOST'].($_SERVER['REDIRECT_URL']??$_SERVER['REQUEST_URI']);
+        $uri = $_SERVER['HTTP_HOST'].($_GET['_url']??'/');
         $router->handle($uri);
 
         $applicationPath = App::getRootPath();
