@@ -39,4 +39,8 @@ abstract class FacadeKernel
         return $this->facadeList[$class];
     }
 
+    public function getFacades()
+    {
+        return $this->facadeList;
+    }
 }
