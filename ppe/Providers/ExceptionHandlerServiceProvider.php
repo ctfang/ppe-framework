@@ -10,7 +10,7 @@ namespace Framework\Providers;
 
 
 use Apps\Exceptions\Kernel;
-use Framework\Support\Exceptions\LoggerHandlerException;
+use Framework\Support\Handler\LoggerHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -53,7 +53,7 @@ class ExceptionHandlerServiceProvider extends ServiceProvider
                 (new Kernel())->registerForWeb($whoops);
             }
             // 日记处理
-            $whoops->pushHandler(new LoggerHandlerException());
+            $whoops->pushHandler(new LoggerHandler());
 
             return $whoops;
         });

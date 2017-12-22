@@ -8,6 +8,7 @@
 
 namespace Framework\Support;
 
+use Framework\Support\Exceptions\QueueException;
 use Phalcon\Di;
 
 abstract class Queue
@@ -49,7 +50,8 @@ abstract class Queue
             $this->saveParams($this->args);
             $this->handle();
         }catch (\Exception $exception){
-            Di::getDefault()->getShared('exception')->handleException($exception);
+            $ErrorException = new QueueException($exception->getMessage(),$exception->getCode(),$exception->getCode(),$exception->getFile(),$exception->getLine(),$exception);
+            Di::getDefault()->getShared('exception')->handleException($ErrorException);
         }
     }
 

@@ -6,14 +6,14 @@
  * Time: 17:03
  */
 
-namespace Framework\Support\Exceptions;
+namespace Framework\Support\Handler;
 
 
 use Monolog\Logger;
 use Phalcon\Di;
 use Whoops\Handler\Handler;
 
-class LoggerHandlerException extends Handler
+class LoggerHandler extends Handler
 {
     /**
      * @return Logger
