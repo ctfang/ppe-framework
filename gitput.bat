@@ -1,3 +1,3 @@
 git add .
-git commit -m"优化"
+git commit -m"快速提交"
 git push origin master
