@@ -10,11 +10,7 @@ namespace Framework\Providers;
 
 
 use Apps\Exceptions\Kernel;
-use Framework\Support\Handler\InitModuleHandler;
 use Framework\Support\Handler\LoggerHandler;
-use Whoops\Handler\JsonResponseHandler;
-use Whoops\Handler\PlainTextHandler;
-use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\Util\Misc;
 
@@ -29,37 +25,15 @@ class ExceptionHandlerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $isDebug = $this->di->get('config')->debug;
-        $this->di->setShared($this->serviceName,function () use ($isDebug) {
+        $this->di->setShared($this->serviceName,function(){
             $whoops = new Run;
             if( Misc::isCommandLine() ){
                 (new Kernel())->registerForCli($whoops);
             }else{
                 (new Kernel())->registerForWeb($whoops);
             }
-
-            if ( $isDebug ) {
-                // 开始调试
-                if( Misc::isCommandLine() ){
-                    $PlainTextHandler = new PlainTextHandler();
-                    $whoops->pushHandler($PlainTextHandler);
-                }elseif (Misc::isAjaxRequest()){
-                    $whoops->pushHandler(new JsonResponseHandler());
-                }else{
-                    $PrettyPageHandler = new PrettyPageHandler;
-                    $PrettyPageHandler->setPageTitle('发生错误');
-                    $whoops->pushHandler( $PrettyPageHandler );
-                    // 检查模块是否初始化
-                    $whoops->pushHandler( new InitModuleHandler() );
-                }
-            }else{
-                // 非调试-不报告 E_NOTICE && E_WARNING
-                // error_reporting(E_ALL^E_NOTICE^E_WARNING);
-            }
-
             // 日记处理
             $whoops->pushHandler(new LoggerHandler());
-
             return $whoops;
         });
     }
