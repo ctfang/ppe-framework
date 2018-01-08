@@ -21,7 +21,7 @@ abstract class DatabaseListener
     /**
      * 在发送SQL到数据库前触发
      */
-    public function beforeQuery()
+    public function beforeQuery($event, $connection)
     {
     }
 

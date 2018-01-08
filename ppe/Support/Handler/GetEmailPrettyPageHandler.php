@@ -250,6 +250,7 @@ class GetEmailPrettyPageHandler extends Handler
         $plainTextHandler->setInspector($this->getInspector());
         $vars["preface"] = "<!--\n\n\n" .  $this->templateHelper->escape($plainTextHandler->generateResponse()) . "\n\n\n\n\n\n\n\n\n\n\n-->";
         ob_start();
+        ob_flush();
         $this->templateHelper->setVariables($vars);
         $this->templateHelper->render($templateFile);
 

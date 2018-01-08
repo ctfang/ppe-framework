@@ -9,7 +9,6 @@
 namespace Framework\Core;
 
 
-use Framework\Providers\ServiceProviderInterface;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 
@@ -30,23 +29,25 @@ class FullCore implements ModuleDefinitionInterface
      * Registers services related to the module
      *
      * @param DiInterface $di
+     * @throws \Exception
      */
     public function registerServices(DiInterface $di)
     {
-        $providers = include $di->getShared('module')->modulePath . "/Config/providers.php";
-        foreach ($providers as $name => $class) {
-            $this->initializeService(new $class($di));
+        $path      = $di->getShared('module')->modulePath . "/Config/providers.php";
+        if( file_exists($path) ){
+            $providers = include $path;
+            foreach ($providers as $name => $class) {
+                $this->initializeService(new $class($di));
+            }
         }
     }
 
     /**
      * Initialize the Service in the Dependency Injector Container.
      *
-     * @param ServiceProviderInterface $serviceProvider
-     *
      * @return $this
      */
-    protected function initializeService(ServiceProviderInterface $serviceProvider)
+    protected function initializeService($serviceProvider)
     {
         $serviceProvider->register();
     }

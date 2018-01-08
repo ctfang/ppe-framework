@@ -9,6 +9,7 @@
 namespace Framework\Support;
 
 use Framework\App;
+use Framework\Providers\ViewServiceProvider;
 use Phalcon\Di;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Volt;
@@ -27,6 +28,10 @@ abstract class Handler extends \Whoops\Handler\Handler
          */
         $di              = Di::getDefault();
         $applicationPath = App::getRootPath();
+        if( !$di->has('view') ){
+            // 没有注册业务视图,注册一个用来显示错误页面
+            (new ViewServiceProvider($di))->register();
+        }
         $view            = $di->getShared('view');
         $viewDir         = $applicationPath . '/apps/Http/Common/Views/';
         $view->setViewsDir($viewDir);
