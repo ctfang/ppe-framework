@@ -8,11 +8,8 @@
 
 namespace Framework\Providers;
 
-use Apps\Exceptions\Handlers\NotRouteHandler;
-use Framework\Support\WebPlugin;
-use Phalcon\Cli\Dispatcher;
+use Apps\Events\RequestEvent;
 use Phalcon\Di;
-use Phalcon\Mvc\Dispatcher as DispatcherMvc;
 use Phalcon\Events\Manager;
 
 class MvcDispatcherServiceProvider extends ServiceProvider
@@ -34,9 +31,15 @@ class MvcDispatcherServiceProvider extends ServiceProvider
             $this->serviceName,
             function () {
                 if( IS_CLI ){
-                    $dispatcher = new Dispatcher();
+                    $dispatcher = new \Phalcon\Cli\Dispatcher();
                 }else{
-                    $dispatcher = new DispatcherMvc();
+                    $dispatcher = new \Phalcon\Mvc\Dispatcher();
+                    // 创建一个事件管理
+                    $eventsManager = new Manager();
+                    $eventsManager->attach("dispatch:beforeExecuteRoute", function ($event, $dispatcher) {
+                        \Event::fire(new RequestEvent($dispatcher));
+                    });
+                    $dispatcher->setEventsManager($eventsManager);
                 }
                 $module     = Di::getDefault()->getShared('module');
                 $dispatcher->setDefaultNamespace($module['defaultNamespace']);

@@ -9,7 +9,7 @@
 namespace Framework\Providers;
 
 
-use Apps\Listeners\DbListener;
+use Apps\Events\DbBeforeQueryEvent;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Events\Manager;
 
@@ -28,7 +28,9 @@ class DatabaseServiceProvider extends ServiceProvider
             $eventsManager = new Manager();
             $defaultDbConfig = \Config::get('database.default')->toArray();
             $connection  = new Mysql($defaultDbConfig);
-            $eventsManager->attach('db', new DbListener());
+            $eventsManager->attach('db:BeforeQuery', function ($event,$connection){
+                \Event::fire(new DbBeforeQueryEvent($connection));
+            });
             $connection->setEventsManager($eventsManager);
             return $connection;
         });

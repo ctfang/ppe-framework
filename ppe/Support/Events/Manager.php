@@ -57,6 +57,7 @@ class Manager implements ManagerInterface
      */
     public function fire($eventType, $source=null, $data = null)
     {
+        dump($eventType);
         if( is_object($eventType) ){
 
         }else{
